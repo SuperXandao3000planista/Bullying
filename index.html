@@ -1,0 +1,857 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Fora do Silêncio — Conscientização sobre Bullying</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --cream: #F5F0E8;
+      --ink: #1A1208;
+      --orange: #E85C2A;
+      --soft-orange: #F4A261;
+      --teal: #264653;
+      --muted: #7A6F60;
+      --line: rgba(26,18,8,0.12);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--cream);
+      color: var(--ink);
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 300;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    /* ── NOISE TEXTURE OVERLAY ── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 9999;
+      opacity: .5;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.2rem 4rem;
+      background: rgba(245,240,232,0.85);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--line);
+      z-index: 100;
+    }
+
+    .nav-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.1rem;
+      font-weight: 900;
+      letter-spacing: .03em;
+      color: var(--orange);
+    }
+
+    .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+    .nav-links a {
+      text-decoration: none;
+      color: var(--muted);
+      font-size: .85rem;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      transition: color .2s;
+    }
+    .nav-links a:hover { color: var(--orange); }
+
+    /* ── HERO ── */
+    #hero {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: center;
+      padding: 8rem 4rem 4rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-bg-circle {
+      position: absolute;
+      top: -10%;
+      right: -8%;
+      width: 55vw;
+      height: 55vw;
+      border-radius: 50%;
+      background: radial-gradient(circle at 40% 40%, var(--soft-orange), var(--orange));
+      opacity: .15;
+      z-index: 0;
+      animation: pulse 8s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%,100% { transform: scale(1); opacity:.15; }
+      50%       { transform: scale(1.05); opacity:.22; }
+    }
+
+    .hero-left { position: relative; z-index: 1; }
+
+    .hero-tag {
+      display: inline-block;
+      font-size: .75rem;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+      color: var(--orange);
+      border: 1px solid var(--orange);
+      border-radius: 2rem;
+      padding: .35rem 1rem;
+      margin-bottom: 2rem;
+      animation: fadeUp .8s ease both;
+    }
+
+    .hero-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(3rem, 6vw, 6rem);
+      line-height: 1.05;
+      font-weight: 900;
+      animation: fadeUp .8s .1s ease both;
+    }
+
+    .hero-title em {
+      font-style: normal;
+      color: var(--orange);
+      position: relative;
+    }
+
+    .hero-title em::after {
+      content: '';
+      position: absolute;
+      bottom: 4px; left: 0; right: 0;
+      height: 3px;
+      background: var(--orange);
+      opacity: .4;
+      border-radius: 2px;
+    }
+
+    .hero-sub {
+      margin-top: 2rem;
+      max-width: 42ch;
+      color: var(--muted);
+      font-size: 1.1rem;
+      animation: fadeUp .8s .2s ease both;
+    }
+
+    .hero-cta {
+      margin-top: 3rem;
+      display: flex;
+      gap: 1.2rem;
+      flex-wrap: wrap;
+      animation: fadeUp .8s .3s ease both;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: .9rem 2.2rem;
+      border-radius: 4rem;
+      font-size: .9rem;
+      font-weight: 500;
+      letter-spacing: .04em;
+      cursor: pointer;
+      text-decoration: none;
+      transition: transform .2s, box-shadow .2s;
+    }
+
+    .btn:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(232,92,42,.25); }
+
+    .btn-primary { background: var(--orange); color: #fff; }
+    .btn-outline { border: 1.5px solid var(--ink); color: var(--ink); }
+    .btn-outline:hover { box-shadow: 0 8px 24px rgba(26,18,8,.12); }
+
+    /* hero visual */
+    .hero-right {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      animation: fadeUp .8s .2s ease both;
+    }
+
+    .hero-stat-card {
+      background: #fff;
+      border-radius: 1.5rem;
+      padding: 2.5rem 3rem;
+      box-shadow: 0 24px 64px rgba(26,18,8,.1);
+      text-align: center;
+      position: relative;
+    }
+
+    .hero-stat-card::before {
+      content: '';
+      position: absolute;
+      inset: -1.5px;
+      border-radius: 1.6rem;
+      background: linear-gradient(135deg, var(--orange), var(--soft-orange));
+      z-index: -1;
+    }
+
+    .stat-big {
+      font-family: 'Playfair Display', serif;
+      font-size: 5rem;
+      font-weight: 900;
+      color: var(--orange);
+      line-height: 1;
+    }
+
+    .stat-label {
+      margin-top: .6rem;
+      color: var(--muted);
+      font-size: .9rem;
+      max-width: 20ch;
+      margin-inline: auto;
+    }
+
+    .stat-source {
+      margin-top: 1rem;
+      font-size: .72rem;
+      color: var(--muted);
+      opacity: .7;
+    }
+
+    .stat-source a { color: inherit; }
+
+    /* ── SECTION COMMON ── */
+    section { padding: 6rem 4rem; }
+
+    .section-label {
+      font-size: .72rem;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      color: var(--orange);
+      margin-bottom: 1rem;
+    }
+
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 4vw, 3.2rem);
+      font-weight: 700;
+      line-height: 1.15;
+      max-width: 18ch;
+    }
+
+    .divider {
+      height: 1px;
+      background: var(--line);
+      margin: 0 4rem;
+    }
+
+    /* ── WHAT IS ── */
+    #o-que-e {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5rem;
+      align-items: start;
+    }
+
+    .types-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.2rem;
+    }
+
+    .type-card {
+      background: #fff;
+      border-radius: 1.2rem;
+      padding: 1.6rem;
+      border-left: 4px solid var(--orange);
+      box-shadow: 0 4px 20px rgba(26,18,8,.06);
+      transition: transform .25s, box-shadow .25s;
+    }
+
+    .type-card:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(26,18,8,.1); }
+
+    .type-icon { font-size: 1.6rem; margin-bottom: .6rem; }
+    .type-name { font-weight: 500; font-size: .95rem; }
+    .type-desc { font-size: .82rem; color: var(--muted); margin-top: .3rem; }
+
+    /* ── DATA STRIP ── */
+    #dados {
+      background: var(--teal);
+      color: var(--cream);
+      padding: 5rem 4rem;
+    }
+
+    #dados .section-label { color: var(--soft-orange); }
+    #dados .section-title { color: var(--cream); max-width: 24ch; }
+
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(3,1fr);
+      gap: 2.5rem;
+      margin-top: 3.5rem;
+    }
+
+    .stat-box {
+      border-top: 2px solid rgba(244,162,97,.4);
+      padding-top: 1.5rem;
+    }
+
+    .stat-box .num {
+      font-family: 'Playfair Display', serif;
+      font-size: 3.2rem;
+      font-weight: 900;
+      color: var(--soft-orange);
+    }
+
+    .stat-box .desc { font-size: .88rem; opacity: .8; margin-top: .3rem; }
+    .stat-box .src  { font-size: .72rem; opacity: .5; margin-top: .8rem; }
+    .stat-box .src a { color: inherit; }
+
+    /* ── IMPACTOS ── */
+    #impactos { background: #fff; }
+
+    .impact-grid {
+      display: grid;
+      grid-template-columns: repeat(3,1fr);
+      gap: 2rem;
+      margin-top: 3rem;
+    }
+
+    .impact-card {
+      padding: 2.5rem;
+      border-radius: 1.4rem;
+      background: var(--cream);
+      position: relative;
+      overflow: hidden;
+      transition: transform .25s;
+    }
+
+    .impact-card:hover { transform: translateY(-5px); }
+
+    .impact-card::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--orange), var(--soft-orange));
+    }
+
+    .impact-number {
+      font-family: 'Playfair Display', serif;
+      font-size: 2rem;
+      font-weight: 900;
+      color: var(--orange);
+      opacity: .25;
+      position: absolute;
+      top: 1.2rem;
+      right: 1.5rem;
+    }
+
+    .impact-icon { font-size: 2rem; margin-bottom: 1rem; }
+    .impact-title { font-weight: 500; font-size: 1rem; margin-bottom: .5rem; }
+    .impact-text { font-size: .85rem; color: var(--muted); }
+
+    /* ── O QUE FAZER ── */
+    #o-que-fazer {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5rem;
+      align-items: start;
+    }
+
+    .steps { margin-top: 2.5rem; }
+
+    .step {
+      display: flex;
+      gap: 1.5rem;
+      align-items: flex-start;
+      padding: 1.5rem 0;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .step:last-child { border-bottom: none; }
+
+    .step-num {
+      flex-shrink: 0;
+      width: 2.6rem;
+      height: 2.6rem;
+      border-radius: 50%;
+      background: var(--orange);
+      color: #fff;
+      font-family: 'Playfair Display', serif;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .step-body h4 { font-weight: 500; margin-bottom: .3rem; }
+    .step-body p  { font-size: .85rem; color: var(--muted); }
+
+    .help-box {
+      background: linear-gradient(135deg, var(--orange), var(--soft-orange));
+      border-radius: 2rem;
+      padding: 3rem;
+      color: #fff;
+    }
+
+    .help-box h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 2rem;
+      margin-bottom: 1.2rem;
+    }
+
+    .help-box p { opacity: .9; font-size: .92rem; }
+
+    .channels { margin-top: 2rem; display: flex; flex-direction: column; gap: 1rem; }
+
+    .channel {
+      background: rgba(255,255,255,.2);
+      border-radius: 1rem;
+      padding: 1rem 1.4rem;
+      text-decoration: none;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      font-size: .88rem;
+      transition: background .2s;
+    }
+
+    .channel:hover { background: rgba(255,255,255,.3); }
+    .channel-icon { font-size: 1.3rem; }
+
+    /* ── FONTES ── */
+    #fontes { background: var(--cream); }
+
+    .sources-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px,1fr));
+      gap: 1.2rem;
+      margin-top: 2.5rem;
+    }
+
+    .source-card {
+      background: #fff;
+      border-radius: 1rem;
+      padding: 1.5rem;
+      box-shadow: 0 2px 12px rgba(26,18,8,.06);
+      display: flex;
+      flex-direction: column;
+      gap: .5rem;
+    }
+
+    .source-org { font-size: .72rem; color: var(--orange); text-transform: uppercase; letter-spacing: .1em; font-weight: 500; }
+    .source-title { font-weight: 500; font-size: .9rem; }
+    .source-link { font-size: .8rem; color: var(--muted); text-decoration: none; word-break: break-all; }
+    .source-link:hover { color: var(--orange); }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--ink);
+      color: rgba(245,240,232,.7);
+      padding: 3rem 4rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+    }
+
+    footer .logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.1rem;
+      font-weight: 900;
+      color: var(--soft-orange);
+    }
+
+    footer p { font-size: .8rem; max-width: 44ch; }
+
+    footer a { color: var(--soft-orange); }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(28px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(32px);
+      transition: opacity .7s ease, transform .7s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: none;
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      nav { padding: 1.2rem 1.5rem; }
+      .nav-links { display: none; }
+      #hero, #o-que-e, #o-que-fazer { grid-template-columns: 1fr; padding: 7rem 1.5rem 3rem; }
+      section { padding: 4rem 1.5rem; }
+      .stats-row, .impact-grid { grid-template-columns: 1fr; }
+      #dados { padding: 4rem 1.5rem; }
+      footer { padding: 2rem 1.5rem; flex-direction: column; text-align: center; }
+      .divider { margin: 0 1.5rem; }
+      .hero-right { margin-top: 2rem; }
+      .types-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <div class="nav-logo">Fora do Silêncio</div>
+    <ul class="nav-links">
+      <li><a href="#o-que-e">O que é</a></li>
+      <li><a href="#dados">Dados</a></li>
+      <li><a href="#impactos">Impactos</a></li>
+      <li><a href="#o-que-fazer">O que fazer</a></li>
+      <li><a href="#fontes">Fontes</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <section id="hero">
+    <div class="hero-bg-circle"></div>
+
+    <div class="hero-left">
+      <span class="hero-tag">🟠 Conscientização • Brasil</span>
+      <h1 class="hero-title">Nenhuma<br/><em>criança</em><br/>deveria ter medo.</h1>
+      <p class="hero-sub">O bullying é uma violência real que deixa marcas profundas. Informação, empatia e ação são as únicas saídas do silêncio.</p>
+      <div class="hero-cta">
+        <a href="#o-que-e" class="btn btn-primary">Entender o bullying</a>
+        <a href="#o-que-fazer" class="btn btn-outline">Como agir agora</a>
+      </div>
+    </div>
+
+    <div class="hero-right">
+      <div class="hero-stat-card">
+        <div class="stat-big">57%</div>
+        <div class="stat-label">dos estudantes brasileiros já sofreram bullying na escola</div>
+        <div class="stat-source">Fonte: <a href="https://www.unicef.org/brazil/relatorios/bullying-sem-escusa" target="_blank">UNICEF Brasil, 2023</a></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- O QUE É -->
+  <section id="o-que-e">
+    <div class="reveal">
+      <p class="section-label">Definição</p>
+      <h2 class="section-title">O que é bullying, de verdade?</h2>
+      <p style="margin-top:1.5rem; color:var(--muted); max-width:52ch;">
+        Bullying é qualquer ato de violência física, verbal ou psicológica, intencional e repetitivo, praticado por um ou mais indivíduos contra outro, em uma relação desigual de poder. No Brasil, é criminalizado pela <strong>Lei nº 13.185/2015</strong> (Programa de Combate à Intimidação Sistemática).
+      </p>
+      <p style="margin-top:1rem; color:var(--muted); max-width:52ch; font-size:.85rem;">
+        A lei define três tipos de envolvidos: <strong>autor</strong>, <strong>vítima</strong> e <strong>testemunha</strong>. A omissão das testemunhas também sustenta o ciclo.
+      </p>
+    </div>
+
+    <div class="types-grid reveal">
+      <div class="type-card">
+        <div class="type-icon">👊</div>
+        <div class="type-name">Físico</div>
+        <div class="type-desc">Empurrões, chutes, socos, danos a pertences da vítima.</div>
+      </div>
+      <div class="type-card">
+        <div class="type-icon">🗣️</div>
+        <div class="type-name">Verbal</div>
+        <div class="type-desc">Apelidos, xingamentos, humilhações, insultos públicos.</div>
+      </div>
+      <div class="type-card">
+        <div class="type-icon">🧠</div>
+        <div class="type-name">Psicológico</div>
+        <div class="type-desc">Exclusão social, ameaças veladas, manipulação emocional.</div>
+      </div>
+      <div class="type-card">
+        <div class="type-icon">📱</div>
+        <div class="type-name">Cyberbullying</div>
+        <div class="type-desc">Assédio via internet, redes sociais, mensagens e e-mails.</div>
+      </div>
+      <div class="type-card">
+        <div class="type-icon">🏳️</div>
+        <div class="type-name">Moral</div>
+        <div class="type-desc">Difamação, boatos, calúnias que mancha a reputação.</div>
+      </div>
+      <div class="type-card">
+        <div class="type-icon">⚧️</div>
+        <div class="type-name">Homofóbico/Transfóbico</div>
+        <div class="type-desc">Motivado pela orientação sexual ou identidade de gênero.</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- DADOS -->
+  <section id="dados">
+    <div class="reveal">
+      <p class="section-label">Números que não podem ser ignorados</p>
+      <h2 class="section-title" style="color:var(--cream);">O bullying no Brasil em dados</h2>
+    </div>
+
+    <div class="stats-row">
+      <div class="stat-box reveal">
+        <div class="num">40%</div>
+        <div class="desc">dos estudantes entre 13 e 17 anos relataram ter sofrido algum tipo de bullying no último mês.</div>
+        <div class="src">IBGE — PENSE 2019. <a href="https://www.ibge.gov.br/estatisticas/sociais/saude/9135-pesquisa-nacional-de-saude-do-escolar.html" target="_blank">Ver relatório →</a></div>
+      </div>
+      <div class="stat-box reveal">
+        <div class="num">70%</div>
+        <div class="desc">das vítimas não contam para ninguém — nem para os pais, nem para professores.</div>
+        <div class="src">ABCD — Associação Brasileira de Combate ao Bullying. <a href="https://www.bullying.com.br" target="_blank">bullying.com.br →</a></div>
+      </div>
+      <div class="stat-box reveal">
+        <div class="num">+160mi</div>
+        <div class="desc">de crianças e adolescentes são vítimas de bullying no mundo, segundo a UNESCO.</div>
+        <div class="src">UNESCO. <a href="https://unesdoc.unesco.org/ark:/48223/pf0000366483" target="_blank">Behind the Numbers, 2019 →</a></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- IMPACTOS -->
+  <section id="impactos">
+    <div class="reveal" style="text-align:center; max-width:60ch; margin:0 auto 1rem;">
+      <p class="section-label">Consequências</p>
+      <h2 class="section-title" style="max-width:none;">Bullying deixa marcas reais</h2>
+      <p style="color:var(--muted); margin-top:1rem;">As consequências afetam saúde mental, desempenho escolar e vida social — muitas vezes por décadas.</p>
+    </div>
+
+    <div class="impact-grid">
+      <div class="impact-card reveal">
+        <div class="impact-number">01</div>
+        <div class="impact-icon">😞</div>
+        <div class="impact-title">Depressão e Ansiedade</div>
+        <div class="impact-text">Vítimas têm 2–9× mais chance de desenvolver depressão e transtornos ansiosos ao longo da vida. (King's College London, 2015)</div>
+      </div>
+      <div class="impact-card reveal">
+        <div class="impact-number">02</div>
+        <div class="impact-icon">📚</div>
+        <div class="impact-title">Queda no Rendimento</div>
+        <div class="impact-text">Crianças vítimas de bullying faltam mais às aulas, têm notas menores e maior probabilidade de evasão escolar. (UNESCO, 2019)</div>
+      </div>
+      <div class="impact-card reveal">
+        <div class="impact-number">03</div>
+        <div class="impact-icon">🤝</div>
+        <div class="impact-title">Isolamento Social</div>
+        <div class="impact-text">O medo do julgamento leva a vítima a se isolar, prejudicando habilidades sociais fundamentais para a vida adulta.</div>
+      </div>
+      <div class="impact-card reveal">
+        <div class="impact-number">04</div>
+        <div class="impact-icon">🧩</div>
+        <div class="impact-title">Baixa Autoestima</div>
+        <div class="impact-text">Mensagens repetidas de rejeição e humilhação distorcem a autoimagem e podem persistir na vida adulta.</div>
+      </div>
+      <div class="impact-card reveal">
+        <div class="impact-number">05</div>
+        <div class="impact-icon">💤</div>
+        <div class="impact-title">Distúrbios do Sono</div>
+        <div class="impact-text">Pesquisas mostram que vítimas de bullying têm 3× mais probabilidade de sofrer insônia e pesadelos recorrentes.</div>
+      </div>
+      <div class="impact-card reveal">
+        <div class="impact-number">06</div>
+        <div class="impact-icon">🚨</div>
+        <div class="impact-title">Risco de Automutilação</div>
+        <div class="impact-text">O bullying severo está associado a ideação suicida e comportamentos de automutilação. Intervenção precoce salva vidas. (OMS)</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- O QUE FAZER -->
+  <section id="o-que-fazer">
+    <div class="reveal">
+      <p class="section-label">Ação</p>
+      <h2 class="section-title">O que fazer se você presencia ou sofre bullying</h2>
+
+      <div class="steps">
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-body">
+            <h4>Não fique em silêncio</h4>
+            <p>Contar para um adulto de confiança (pais, professores, conselheiro escolar) é o primeiro e mais importante passo. O silêncio permite que o ciclo continue.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-body">
+            <h4>Documente os episódios</h4>
+            <p>Registre datas, locais, o que aconteceu e quem testemunhou. Capturas de tela de cyberbullying são evidências importantes para denúncias.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-body">
+            <h4>Comunique à escola formalmente</h4>
+            <p>Toda escola é obrigada pela Lei 13.185/2015 a ter protocolos de combate ao bullying. Exija uma resposta e acompanhe o caso por escrito.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">4</div>
+          <div class="step-body">
+            <h4>Se necessário, registre Boletim de Ocorrência</h4>
+            <p>Bullying grave (com violência física ou cyberbullying) configura crime. O BO pode ser feito online no site da sua Delegacia Eletrônica estadual.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">5</div>
+          <div class="step-body">
+            <h4>Busque apoio psicológico</h4>
+            <p>O CAPS (Centro de Atenção Psicossocial) oferece atendimento gratuito. Seu filho não precisa enfrentar isso sozinho.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="help-box reveal">
+      <h3>Precisa de ajuda agora?</h3>
+      <p>Se você ou alguém que você conhece está em sofrimento imediato, entre em contato com um destes canais:</p>
+      <div class="channels">
+        <a class="channel" href="https://www.cvv.org.br" target="_blank">
+          <span class="channel-icon">💛</span>
+          <div>
+            <strong>CVV — Centro de Valorização da Vida</strong><br/>
+            <small>Ligue 188 · 24h gratuito · cvv.org.br</small>
+          </div>
+        </a>
+        <a class="channel" href="https://www.disque100.mdh.gov.br" target="_blank">
+          <span class="channel-icon">📞</span>
+          <div>
+            <strong>Disque 100 — Direitos Humanos</strong><br/>
+            <small>Denúncia de violência contra crianças e adolescentes</small>
+          </div>
+        </a>
+        <a class="channel" href="https://www.safernet.org.br/helpline" target="_blank">
+          <span class="channel-icon">🌐</span>
+          <div>
+            <strong>SaferNet HelpLine</strong><br/>
+            <small>Apoio psicológico para cyberbullying — gratuito</small>
+          </div>
+        </a>
+        <a class="channel" href="https://www.tjsp.jus.br/ProconJovem" target="_blank">
+          <span class="channel-icon">⚖️</span>
+          <div>
+            <strong>Procon Jovem / ECA</strong><br/>
+            <small>Orientação jurídica sobre direitos de crianças</small>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- FONTES -->
+  <section id="fontes">
+    <div class="reveal">
+      <p class="section-label">Referências</p>
+      <h2 class="section-title">Fontes e leituras recomendadas</h2>
+    </div>
+
+    <div class="sources-grid">
+      <div class="source-card reveal">
+        <div class="source-org">IBGE</div>
+        <div class="source-title">Pesquisa Nacional de Saúde do Escolar (PENSE) 2019</div>
+        <a class="source-link" href="https://www.ibge.gov.br/estatisticas/sociais/saude/9135-pesquisa-nacional-de-saude-do-escolar.html" target="_blank">ibge.gov.br → PENSE 2019</a>
+      </div>
+      <div class="source-card reveal">
+        <div class="source-org">UNESCO</div>
+        <div class="source-title">Behind the Numbers: Ending School Violence and Bullying (2019)</div>
+        <a class="source-link" href="https://unesdoc.unesco.org/ark:/48223/pf0000366483" target="_blank">unesdoc.unesco.org → Behind the Numbers</a>
+      </div>
+      <div class="source-card reveal">
+        <div class="source-org">UNICEF Brasil</div>
+        <div class="source-title">Bullying sem escusa — relatório sobre violência escolar no Brasil (2023)</div>
+        <a class="source-link" href="https://www.unicef.org/brazil/relatorios/bullying-sem-escusa" target="_blank">unicef.org/brazil → Bullying sem escusa</a>
+      </div>
+      <div class="source-card reveal">
+        <div class="source-org">OMS — Organização Mundial da Saúde</div>
+        <div class="source-title">Violence Against Children — prevalência e consequências</div>
+        <a class="source-link" href="https://www.who.int/news-room/fact-sheets/detail/violence-against-children" target="_blank">who.int → Violence Against Children</a>
+      </div>
+      <div class="source-card reveal">
+        <div class="source-org">Governo Federal — Planalto</div>
+        <div class="source-title">Lei nº 13.185/2015 — Programa de Combate à Intimidação Sistemática</div>
+        <a class="source-link" href="https://www.planalto.gov.br/ccivil_03/_ato2015-2018/2015/lei/l13185.htm" target="_blank">planalto.gov.br → Lei 13.185/2015</a>
+      </div>
+      <div class="source-card reveal">
+        <div class="source-org">King's College London</div>
+        <div class="source-title">Adult mental health outcomes of childhood bullying victimization (2015)</div>
+        <a class="source-link" href="https://www.thelancet.com/journals/lanpsy/article/PIIS2215-0366(15)00165-0/fulltext" target="_blank">thelancet.com → Lancet Psychiatry 2015</a>
+      </div>
+      <div class="source-card reveal">
+        <div class="source-org">ABCD</div>
+        <div class="source-title">Associação Brasileira de Combate ao Bullying — dados e estatísticas nacionais</div>
+        <a class="source-link" href="https://www.bullying.com.br" target="_blank">bullying.com.br</a>
+      </div>
+      <div class="source-card reveal">
+        <div class="source-org">SaferNet Brasil</div>
+        <div class="source-title">Central de Denúncias de Crimes e Violações na Internet</div>
+        <a class="source-link" href="https://www.safernet.org.br" target="_blank">safernet.org.br</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div>
+      <div class="logo">Fora do Silêncio</div>
+      <p style="margin-top:.5rem;">Site educativo sobre conscientização ao bullying. Criado com base em fontes oficiais e pesquisas científicas.</p>
+    </div>
+    <p style="font-size:.78rem;">Em emergências, ligue <strong style="color:var(--soft-orange);">188</strong> (CVV) · <strong style="color:var(--soft-orange);">190</strong> (Polícia) · <strong style="color:var(--soft-orange);">100</strong> (Direitos Humanos)</p>
+  </footer>
+
+  <script>
+    // Scroll reveal
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((e, i) => {
+        if (e.isIntersecting) {
+          setTimeout(() => e.target.classList.add('visible'), i * 80);
+          observer.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.12 });
+
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+    // Animated counter on stat-big
+    function animateCounter(el, target, suffix='%') {
+      let start = 0;
+      const duration = 1800;
+      const step = timestamp => {
+        if (!start) start = timestamp;
+        const progress = Math.min((timestamp - start) / duration, 1);
+        const ease = 1 - Math.pow(1 - progress, 3);
+        el.textContent = Math.floor(ease * parseInt(target)) + suffix;
+        if (progress < 1) requestAnimationFrame(step);
+      };
+      requestAnimationFrame(step);
+    }
+
+    const statBig = document.querySelector('.stat-big');
+    const heroObserver = new IntersectionObserver(entries => {
+      if (entries[0].isIntersecting) {
+        animateCounter(statBig, 57, '%');
+        heroObserver.disconnect();
+      }
+    }, { threshold: .5 });
+    heroObserver.observe(statBig);
+  </script>
+
+</body>
+</html>
